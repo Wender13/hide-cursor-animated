@@ -21,6 +21,9 @@ const APP_HIDE_MIN_IDLE_US = 700 * 1000
 // apart from motion and clicks this long after the input arrives.
 const TYPING_MIN_REST_US = 300 * 1000
 const TYPING_CHECK_MS = 60
+// Input other than pointer motion this recent means the user is typing
+// (apps such as VS Code and GTK text fields hide the cursor while typing).
+const RECENT_INPUT_MS = 1500
 const BUTTONS_MASK = Clutter.ModifierType.BUTTON1_MASK | Clutter.ModifierType.BUTTON2_MASK |
   Clutter.ModifierType.BUTTON3_MASK | Clutter.ModifierType.BUTTON4_MASK |
   Clutter.ModifierType.BUTTON5_MASK
@@ -75,6 +78,7 @@ export class HideCursor {
     this._animationKind = null
     this._spriteCache = null
     this._lastSprite = null
+    this._appHidCursor = false
     this._activeWatch = 0
     this._typingCheck = 0
     this._lastPointer = global.get_pointer().slice(0, 2)
@@ -216,18 +220,31 @@ export class HideCursor {
 
     if (this._rememberSprite()) {
       // The app brought its cursor back.
+      this._appHidCursor = false
       if (this._animationKind === 'hide')
         this._cancelAnimation()
       return
     }
 
+    // The signal can repeat for the same hide; react once, or the second
+    // one would restart the animation.
+    if (this._appHidCursor)
+      return
+    this._appHidCursor = true
+
     // The app under the pointer made the cursor invisible, as video players
     // do after a short idle, usually well before our own timeout.
-    const idle = GLib.get_monotonic_time() - this._lastMove
+    const rest = GLib.get_monotonic_time() - this._lastMove
     if (!this._lastSprite || !this._settings.get_boolean('animate-app-hide'))
       return
-    if (idle < APP_HIDE_MIN_IDLE_US) {
+    if (rest < APP_HIDE_MIN_IDLE_US) {
       this._debug('app hid the cursor while it was moving, not animating')
+      return
+    }
+    const inputIdleMs = this._idleMonitor.get_idletime()
+    const typing = inputIdleMs < RECENT_INPUT_MS && rest / 1000 - inputIdleMs > 150
+    if (typing && !this._settings.get_boolean('hide-on-typing')) {
+      this._debug('app hid the cursor while typing, and hide-on-typing is off; not animating')
       return
     }
     const app = this._excludedAppUnderPointer()
@@ -254,7 +271,12 @@ export class HideCursor {
 
   async _hide() {
     this._hidden = true
-    this._cancelAnimation()
+    // An app-hide animation already playing is this same hide; let it
+    // finish instead of cutting it.
+    if (this._animationKind === 'hide')
+      this._generation++
+    else
+      this._cancelAnimation()
     const generation = this._generation
 
     if (!this._unfocusInhibited) {
