@@ -82,12 +82,15 @@ gnome-extensions prefs hide-cursor-drops@wender13.github.io
 - **Hide when typing** – hides the cursor as soon as you start typing,
   without waiting. GNOME doesn't let extensions see which keys you press,
   so any input that isn't mouse motion or a click counts: scrolling with
-  the mouse at rest hides the cursor too. Off by default.
+  the mouse at rest hides the cursor too. Off by default. Some apps (VS
+  Code, GTK text fields) hide the cursor themselves while you type; that
+  is the app, not the extension, and it only gets the animation when this
+  option is on.
 - **Animate when an app hides the cursor** – video players, fullscreen
-  browsers and some editors (VS Code hides the cursor while you type) make
-  the cursor invisible by themselves, usually before the timeout. With this
-  on, the animation plays when they do. Pointer grabs in games don't
-  trigger it.
+  browsers make the cursor invisible by themselves, usually before the
+  timeout. With this on, the animation plays when they do. Pointer grabs
+  in games don't trigger it, and neither do apps hiding the cursor while
+  you type, unless *Hide when typing* is on.
 - **Excluded apps** – press **+** to pick apps from the list of installed
   ones. While the pointer is over one of their windows, the cursor is never
   hidden, neither by the timeout nor by typing.
@@ -97,7 +100,8 @@ gnome-extensions prefs hide-cursor-drops@wender13.github.io
 ![Animation preferences](docs/prefs-animation.png)
 
 - **When hiding** – the style and its duration:
-  - *Drops*: the cursor collapses, balls pop out and fly off as drops.
+  - *Drops*: the cursor shrinks into its center and balls fly out of it,
+    stretching into drops, in one continuous motion.
   - *Shrink*: the cursor swells briefly and shrinks into its center.
   - *Fade*: the cursor fades out.
   - *Ripple*: the cursor collapses into two expanding rings.
@@ -117,8 +121,9 @@ gnome-extensions prefs hide-cursor-drops@wender13.github.io
 
 ![Sound preferences](docs/prefs-sound.png)
 
-A sound for hiding and one for showing: *No sound* (default), *Drop* (three
-soft "plips" when hiding, one when showing) or a *Custom file* of your own.
+A sound for hiding and one for showing: *No sound* (default), *Drop* (a
+short, bright "plip" when hiding and a lower one when showing) or a
+*Custom file* of your own.
 The ▶ button plays it. They are played as system sounds, so they follow
 the "System Sounds" volume in *Settings → Sound* and are muted when GNOME's
 alert sounds are off.
@@ -142,6 +147,10 @@ Typical messages:
 - `app hid the cursor while it was moving` – an app (usually a game) took
   over the pointer; this is intended.
 - `not hiding: pointer over excluded app` – see *Excluded apps*.
+- `app hid the cursor while typing` – the app hid it (see *Hide when
+  typing*).
+- `hide animation: 56 frames, longest gap 17 ms` – frame timing of each
+  animation; gaps well above 17 ms (at 60 Hz) mean dropped frames.
 
 Set `debug` back to `false` when done.
 
