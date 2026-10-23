@@ -6,6 +6,7 @@
 // own side, stretching into a drop.
 
 import Clutter from 'gi://Clutter'
+import GLib from 'gi://GLib'
 import St from 'gi://St'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 
@@ -61,6 +62,10 @@ export class HideAnimation {
     this._oy = top + info.cy * k
     const size = Math.max(info.bw, info.bh) * k
 
+    // Fullscreen windows are otherwise scanned out directly, skipping the
+    // stage, and the animation would play unseen.
+    global.compositor.disable_unredirect()
+
     this._container = new Clutter.Actor({reactive: false})
     Main.uiGroup.add_child(this._container)
     Main.uiGroup.set_child_above_sibling(this._container, null)
@@ -114,6 +119,14 @@ export class HideAnimation {
     this._timeline.connect('completed', () => this.destroy())
     this._update()
     this._timeline.start()
+
+    // The timeline only advances on new frames; never leave the copy of the
+    // cursor on screen if they stop coming.
+    this._watchdog = GLib.timeout_add(GLib.PRIORITY_DEFAULT, duration + 1000, () => {
+      this._watchdog = 0
+      this.destroy()
+      return GLib.SOURCE_REMOVE
+    })
   }
 
   _update() {
@@ -197,10 +210,14 @@ export class HideAnimation {
     if (!this._container)
       return
 
+    if (this._watchdog)
+      GLib.Source.remove(this._watchdog)
+    this._watchdog = 0
     this._timeline.stop()
     this._timeline = null
     this._container.destroy()
     this._container = null
+    global.compositor.enable_unredirect()
 
     const onDone = this._onDone
     this._onDone = null
