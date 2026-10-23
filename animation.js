@@ -43,11 +43,16 @@ function growing(start) {
 // copy, and may draw around it.
 export const HIDE_STYLES = {
   drops: {
-    // The cursor collapses, balls pop out of it and fly off as drops.
-    cursor: collapsing(0.16),
+    // The cursor shrinks straight into its center, and the balls come out
+    // of it already flying, stretching into drops on the way: one
+    // continuous motion, no pause between the two.
+    cursor: t => {
+      const q = span(t, 0, 0.13)
+      return {scale: 1 - easeInQuad(q), opacity: clamp01((1 - q) / 0.3)}
+    },
     draw(fx, cr, t) {
-      const pop = easeOutBack(span(t, 0.1, 0.2))
-      const flight = span(t, 0.26, 1)
+      const pop = easeOutCubic(span(t, 0.07, 0.15))
+      const flight = span(t, 0.07, 1)
       for (const drop of fx.drops)
         fx.drawDrop(cr, drop, flight, pop, false)
     },
