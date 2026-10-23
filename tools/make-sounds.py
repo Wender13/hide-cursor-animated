@@ -4,8 +4,8 @@
 """Synthesizes the bundled drop sounds into sounds/.
 
 A water drop "plip" is a short sine whose pitch rises quickly while it
-decays. Hiding plays three of them, one per drop; showing plays a single
-lower one that rises further, like the drops merging back.
+decays. Hiding plays a single bright one, quick and direct; showing plays
+a lower one that rises further, like the drops merging back.
 """
 
 import math
@@ -54,10 +54,8 @@ def main():
     out.mkdir(exist_ok=True)
 
     write(out / 'drop-hide.wav', mix([
-        (0.000, plip(820, 1900, 0.09, 0.030), 1.0),
-        (0.045, plip(980, 2300, 0.08, 0.026), 0.8),
-        (0.095, plip(900, 2100, 0.08, 0.024), 0.65),
-    ], 0.22))
+        (0.000, plip(760, 2000, 0.11, 0.035), 1.0),
+    ], 0.14))
 
     write(out / 'drop-show.wav', mix([
         (0.000, plip(420, 1500, 0.14, 0.045), 1.0),
