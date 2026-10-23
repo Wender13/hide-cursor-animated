@@ -139,9 +139,11 @@ export class CursorAnimation {
    *   size/distance/gravity relative to the defaults
    * @param {number} params.duration - ms
    * @param {Function} params.onDone - called once, however it ends
+   * @param {?Function} params.log - receives frame timing stats at the end
    */
-  constructor({style, follow, sprite, spriteScale, hot, pointer, info, fill, outline, drops, duration, onDone}) {
+  constructor({style, follow, sprite, spriteScale, hot, pointer, info, fill, outline, drops, duration, onDone, log = null}) {
     this._style = style
+    this._log = log
     this._follow = follow
     this._fill = fill
     this._outline = outline
@@ -219,8 +221,15 @@ export class CursorAnimation {
     this._container.add_child(this._cursor)
 
     this._progress = 0
+    this._frames = 0
+    this._longestGap = 0
+    this._lastFrame = GLib.get_monotonic_time()
     this._timeline = new Clutter.Timeline({actor: this._container, duration})
     this._timeline.connect('new-frame', () => {
+      const now = GLib.get_monotonic_time()
+      this._longestGap = Math.max(this._longestGap, now - this._lastFrame)
+      this._lastFrame = now
+      this._frames++
       this._progress = this._timeline.get_progress()
       this._update()
     })
@@ -365,6 +374,8 @@ export class CursorAnimation {
     this._container.destroy()
     this._container = null
     global.compositor.enable_unredirect()
+
+    this._log?.(`${this._frames} frames, longest gap ${(this._longestGap / 1000).toFixed(1)} ms, ended at ${Math.round(this._progress * 100)}%`)
 
     const onDone = this._onDone
     this._onDone = null

@@ -416,6 +416,7 @@ export class HideCursor {
         shape: settings.get_string('drop-shape'),
       },
       duration: duration ?? settings.get_int('animation-duration'),
+      log: settings.get_boolean('debug') ? msg => this._debug(`${kind} animation: ${msg}`) : null,
       onDone: () => {
         if (this._animation === animation) {
           this._animation = null
