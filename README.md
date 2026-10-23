@@ -44,7 +44,7 @@ Building needs `glib-compile-schemas` and `msgfmt` (packages `glib2` and
 
 ```sh
 make pack
-gnome-extensions install --force hide-cursor-drops@jr.shell-extension.zip
+gnome-extensions install --force hide-cursor-drops@wender13.github.io.shell-extension.zip
 ```
 
 ### Enabling it
@@ -54,7 +54,7 @@ back in** once after installing, then enable it in the *Extensions* app or
 with:
 
 ```sh
-gnome-extensions enable hide-cursor-drops@jr
+gnome-extensions enable hide-cursor-drops@wender13.github.io
 ```
 
 If you use another cursor-hiding extension, such as
@@ -70,7 +70,7 @@ To change how it behaves, open the preferences from the *Extensions* app
 (the gear next to the extension) or with:
 
 ```sh
-gnome-extensions prefs hide-cursor-drops@jr
+gnome-extensions prefs hide-cursor-drops@wender13.github.io
 ```
 
 ### General
@@ -129,7 +129,7 @@ alert sounds are off.
 each hide did or didn't animate:
 
 ```sh
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/hide-cursor-drops@jr/schemas \
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/hide-cursor-drops@wender13.github.io/schemas \
   set org.gnome.shell.extensions.hide-cursor-drops debug true
 journalctl --user -f -o cat /usr/bin/gnome-shell | grep hide-cursor-drops
 ```

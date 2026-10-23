@@ -1,4 +1,4 @@
-UUID := hide-cursor-drops@jr
+UUID := hide-cursor-drops@wender13.github.io
 DEST := $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 BUILD := build-$(shell date +%s%N)
 # Loaded once per session (prefs.js: per preferences app run); changes here

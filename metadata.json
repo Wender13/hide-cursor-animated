@@ -1,5 +1,5 @@
 {
-  "uuid": "hide-cursor-drops@jr",
+  "uuid": "hide-cursor-drops@wender13.github.io",
   "name": "Hide Cursor Drops",
   "description": "Hides the mouse cursor on inactivity with an animation: the cursor shrinks and bursts into three drops of its own color.",
   "settings-schema": "org.gnome.shell.extensions.hide-cursor-drops",
