@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Wender
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 import GLib from 'gi://GLib'
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js'
 

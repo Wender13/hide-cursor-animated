@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Wender
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 // The hide animation: a copy of the cursor shrinks into its center, three
 // balls of the cursor's color pop out of it, then each one shoots off to its
 // own side, stretching into a drop.

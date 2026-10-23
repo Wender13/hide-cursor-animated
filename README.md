@@ -70,3 +70,8 @@ This only covers `main.js`, `animation.js` and `sprite.js`. Changes to
 | `prefs.js` | Preferences window |
 
 Logs from the extension show up in `journalctl --user -f -o cat /usr/bin/gnome-shell`.
+
+## License
+
+Licensed under the GNU General Public License, version 2 or (at your
+option) any later version, like GNOME Shell itself. See [LICENSE](LICENSE).

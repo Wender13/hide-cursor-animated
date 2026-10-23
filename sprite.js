@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Wender
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 // Cursor sprite analysis: figures out the colors and the visual center of
 // the current cursor so the hide animation can match it.
 //
