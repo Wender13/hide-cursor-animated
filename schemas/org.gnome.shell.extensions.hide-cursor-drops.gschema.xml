@@ -23,5 +23,9 @@
       <default>'#3584e4'</default>
       <summary>Custom drop color (#rrggbb)</summary>
     </key>
+    <key name="debug" type="b">
+      <default>false</default>
+      <summary>Log hiding decisions to the journal</summary>
+    </key>
   </schema>
 </schemalist>

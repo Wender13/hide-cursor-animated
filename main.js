@@ -8,7 +8,29 @@ import {HideAnimation} from './animation.js'
 import {readSprite} from './sprite.js'
 
 const TICK_MS = 250
+// Reading the sprite normally takes a few ms; past this, hide without
+// animating instead of leaving the cursor up indefinitely.
+const READ_TIMEOUT_MS = 500
+// Apps hiding their own cursor (video players, fullscreen browsers) only
+// count when the pointer was resting this long; games grabbing the pointer
+// mid-motion don't.
+const APP_HIDE_MIN_IDLE_US = 700 * 1000
 const FALLBACK_FILL = {r: 0, g: 0, b: 0}
+
+function withTimeout(promise, ms) {
+  let id
+  const timeout = new Promise((_, reject) => {
+    id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ms, () => {
+      id = 0
+      reject(new Error(`timed out after ${ms} ms`))
+      return GLib.SOURCE_REMOVE
+    })
+  })
+  return Promise.race([promise, timeout]).finally(() => {
+    if (id)
+      GLib.Source.remove(id)
+  })
+}
 
 function parseColor(str) {
   const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(str)
@@ -32,9 +54,13 @@ export class HideCursor {
     this._generation = 0
     this._animation = null
     this._spriteCache = null
+    this._lastSprite = null
+    this._lastPointer = global.get_pointer().slice(0, 2)
     this._lastMove = GLib.get_monotonic_time()
+    this._rememberSprite()
 
     this._positionId = this._tracker.connect('position-invalidated', this._onMove)
+    this._cursorChangedId = this._tracker.connect('cursor-changed', this._onCursorChanged)
     this._timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, TICK_MS, this._tick)
   }
 
@@ -43,6 +69,8 @@ export class HideCursor {
     this._timer = null
     this._tracker.disconnect(this._positionId)
     this._positionId = null
+    this._tracker.disconnect(this._cursorChangedId)
+    this._cursorChangedId = null
 
     this._show()
 
@@ -50,6 +78,12 @@ export class HideCursor {
     this._seat = null
     this._settings = null
     this._spriteCache = null
+    this._lastSprite = null
+  }
+
+  _debug(msg) {
+    if (this._settings?.get_boolean('debug'))
+      console.log(`hide-cursor-drops: ${msg}`)
   }
 
   _tick = () => {
@@ -63,14 +97,62 @@ export class HideCursor {
   }
 
   _onMove = () => {
+    // The signal also fires without real motion (e.g. on sprite updates),
+    // which must not cancel the animation.
+    const [x, y] = global.get_pointer()
+    if (x === this._lastPointer[0] && y === this._lastPointer[1])
+      return
+    this._lastPointer = [x, y]
     this._lastMove = GLib.get_monotonic_time()
+
     if (this._hidden)
       this._show()
+    else
+      this._cancelAnimation()
+  }
+
+  _rememberSprite() {
+    const sprite = this._tracker.get_sprite()
+    if (sprite)
+      this._lastSprite = {sprite, hot: this._tracker.get_hot()}
+    return sprite
+  }
+
+  _onCursorChanged = () => {
+    if (this._hidden)
+      return
+
+    if (this._rememberSprite()) {
+      // The app brought its cursor back.
+      this._cancelAnimation()
+      return
+    }
+
+    // The app under the pointer made the cursor invisible, as video players
+    // do after a short idle, usually well before our own timeout.
+    const idle = GLib.get_monotonic_time() - this._lastMove
+    if (!this._lastSprite || idle < APP_HIDE_MIN_IDLE_US) {
+      this._debug('app hid the cursor while it was moving, not animating')
+      return
+    }
+    this._debug('app hid the cursor, animating its last sprite')
+    this._animateAppHide().catch(logError)
+  }
+
+  async _animateAppHide() {
+    const {sprite, hot} = this._lastSprite
+    this._cancelAnimation()
+    const generation = this._generation
+
+    const info = await this._readForAnimation(sprite)
+    if (info && generation === this._generation && !this._hidden)
+      this._animate(sprite, hot, info)
   }
 
   async _hide() {
     this._hidden = true
-    const generation = ++this._generation
+    this._cancelAnimation()
+    const generation = this._generation
 
     if (!this._unfocusInhibited) {
       this._seat.inhibit_unfocus()
@@ -78,16 +160,11 @@ export class HideCursor {
     }
 
     const sprite = this._tracker.get_sprite()
-    let info = null
-    if (sprite && this._settings.get_boolean('animation-enabled')) {
-      try {
-        info = await this._analyze(sprite)
-      } catch (e) {
-        logError(e, 'hide-cursor-drops: could not read the cursor sprite')
-      }
-      // The pointer moved while the sprite was being read.
-      if (generation !== this._generation)
-        return
+    const info = await this._readForAnimation(sprite)
+    // The pointer moved while the sprite was being read.
+    if (generation !== this._generation) {
+      this._debug('pointer moved while reading the sprite')
+      return
     }
 
     // Swap the real cursor for the animated copy in the same frame.
@@ -95,15 +172,12 @@ export class HideCursor {
     this._visibilityInhibited = true
 
     if (info)
-      this._animate(sprite, info)
+      this._animate(sprite, this._tracker.get_hot(), info)
   }
 
   _show() {
     this._hidden = false
-    this._generation++
-
-    this._animation?.destroy()
-    this._animation = null
+    this._cancelAnimation()
 
     if (this._visibilityInhibited) {
       this._tracker.uninhibit_cursor_visibility()
@@ -113,6 +187,38 @@ export class HideCursor {
     if (this._unfocusInhibited) {
       this._seat.uninhibit_unfocus()
       this._unfocusInhibited = false
+    }
+  }
+
+  _cancelAnimation() {
+    // Also invalidates sprite reads still in flight.
+    this._generation++
+    if (this._animation)
+      this._debug('animation cancelled')
+    this._animation?.destroy()
+    this._animation = null
+  }
+
+  /** @returns {Promise<?object>} sprite info, or null to hide without animating */
+  async _readForAnimation(sprite) {
+    if (!this._settings.get_boolean('animation-enabled')) {
+      this._debug('not animating: disabled in settings')
+      return null
+    }
+    if (!sprite) {
+      // Usually the app under the pointer already made it invisible.
+      this._debug('not animating: no cursor sprite')
+      return null
+    }
+
+    try {
+      const info = await withTimeout(this._analyze(sprite), READ_TIMEOUT_MS)
+      if (!info)
+        this._debug(`not animating: sprite ${sprite.get_width()}x${sprite.get_height()} has no opaque pixels`)
+      return info
+    } catch (e) {
+      logError(e, 'hide-cursor-drops: could not read the cursor sprite')
+      return null
     }
   }
 
@@ -129,7 +235,9 @@ export class HideCursor {
     return 1 / Math.max(1, Math.floor(avg / Meta.prefs_get_cursor_size() + 0.1))
   }
 
-  _animate(sprite, info) {
+  _animate(sprite, hot, info) {
+    this._debug(`animating ${sprite.get_width()}x${sprite.get_height()} sprite, info ${JSON.stringify(info)}`)
+
     let fill = info.fill ?? FALLBACK_FILL
     if (this._settings.get_boolean('custom-color-enabled'))
       fill = parseColor(this._settings.get_string('custom-color')) ?? fill
@@ -138,7 +246,7 @@ export class HideCursor {
     this._animation = new HideAnimation({
       sprite,
       spriteScale: this._spriteScale(sprite),
-      hot: this._tracker.get_hot(),
+      hot,
       pointer: [x, y],
       info,
       fill,
