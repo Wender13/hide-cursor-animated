@@ -9,8 +9,6 @@
 import Gio from 'gi://Gio'
 import Shell from 'gi://Shell'
 
-Gio._promisify(Shell.Screenshot, 'composite_to_stream')
-
 const OPAQUE = 200
 
 function dominantColor(pixels, indices) {
@@ -147,8 +145,18 @@ export function analyzeSprite(pixels, width, height, rowstride, channels) {
  */
 export async function readSprite(sprite) {
   const stream = Gio.MemoryOutputStream.new_resizable()
-  const pixbuf = await Shell.Screenshot.composite_to_stream(
-    sprite, 0, 0, -1, -1, 1, null, 0, 0, 1, stream)
+  // Not Gio._promisify(): that would patch Shell.Screenshot on import.
+  const pixbuf = await new Promise((resolve, reject) => {
+    Shell.Screenshot.composite_to_stream(
+      sprite, 0, 0, -1, -1, 1, null, 0, 0, 1, stream,
+      (_source, result) => {
+        try {
+          resolve(Shell.Screenshot.composite_to_stream_finish(result))
+        } catch (e) {
+          reject(e)
+        }
+      })
+  })
   stream.close(null)
 
   return analyzeSprite(
