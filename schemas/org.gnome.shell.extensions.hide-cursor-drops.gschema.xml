@@ -2,18 +2,93 @@
 <schemalist>
   <schema id="org.gnome.shell.extensions.hide-cursor-drops"
     path="/org/gnome/shell/extensions/hide-cursor-drops/">
+
+    <!-- Hiding -->
     <key name="timeout" type="i">
+      <range min="1" max="60"/>
       <default>5</default>
       <summary>Hide cursor timeout</summary>
       <description>Time in seconds after which the cursor is hidden when idle.</description>
     </key>
-    <key name="animation-enabled" type="b">
+    <key name="hide-on-typing" type="b">
+      <default>false</default>
+      <summary>Hide the cursor when typing</summary>
+      <description>Hide as soon as there is input other than pointer motion or clicks, i.e. typing or scrolling with a resting pointer.</description>
+    </key>
+    <key name="animate-app-hide" type="b">
       <default>true</default>
-      <summary>Animate when hiding</summary>
+      <summary>Animate when an app hides its own cursor</summary>
+      <description>Video players and fullscreen browsers hide the cursor by themselves.</description>
+    </key>
+    <key name="excluded-apps" type="as">
+      <default>[]</default>
+      <summary>Apps over which the cursor is never hidden</summary>
+      <description>Desktop file IDs, such as org.gnome.Nautilus.desktop.</description>
+    </key>
+
+    <!-- Animations -->
+    <key name="hide-style" type="s">
+      <choices>
+        <choice value="drops"/>
+        <choice value="shrink"/>
+        <choice value="fade"/>
+        <choice value="ripple"/>
+        <choice value="none"/>
+      </choices>
+      <default>'drops'</default>
+      <summary>Animation when the cursor hides</summary>
     </key>
     <key name="animation-duration" type="i">
+      <range min="150" max="3000"/>
       <default>900</default>
-      <summary>Animation duration in milliseconds</summary>
+      <summary>Hide animation duration in milliseconds</summary>
+    </key>
+    <key name="show-style" type="s">
+      <choices>
+        <choice value="drops"/>
+        <choice value="grow"/>
+        <choice value="fade"/>
+        <choice value="ripple"/>
+        <choice value="none"/>
+      </choices>
+      <default>'drops'</default>
+      <summary>Animation when the cursor shows again</summary>
+    </key>
+    <key name="show-duration" type="i">
+      <range min="150" max="3000"/>
+      <default>450</default>
+      <summary>Show animation duration in milliseconds</summary>
+    </key>
+
+    <!-- Drops -->
+    <key name="drop-count" type="i">
+      <range min="1" max="12"/>
+      <default>3</default>
+      <summary>Number of drops</summary>
+    </key>
+    <key name="drop-size" type="d">
+      <range min="0.5" max="2.0"/>
+      <default>1.0</default>
+      <summary>Drop size, relative to the default</summary>
+    </key>
+    <key name="drop-distance" type="d">
+      <range min="0.5" max="2.5"/>
+      <default>1.0</default>
+      <summary>How far the drops travel, relative to the default</summary>
+    </key>
+    <key name="drop-gravity" type="d">
+      <range min="0.0" max="3.0"/>
+      <default>1.0</default>
+      <summary>How much the drops fall, relative to the default</summary>
+    </key>
+    <key name="drop-shape" type="s">
+      <choices>
+        <choice value="teardrop"/>
+        <choice value="circle"/>
+        <choice value="spark"/>
+      </choices>
+      <default>'teardrop'</default>
+      <summary>Drop shape</summary>
     </key>
     <key name="custom-color-enabled" type="b">
       <default>false</default>
@@ -23,6 +98,35 @@
       <default>'#3584e4'</default>
       <summary>Custom drop color (#rrggbb)</summary>
     </key>
+
+    <!-- Sounds -->
+    <key name="hide-sound" type="s">
+      <choices>
+        <choice value="none"/>
+        <choice value="drop"/>
+        <choice value="file"/>
+      </choices>
+      <default>'none'</default>
+      <summary>Sound played when the cursor hides</summary>
+    </key>
+    <key name="hide-sound-file" type="s">
+      <default>''</default>
+      <summary>Sound file played when the cursor hides, if hide-sound is 'file'</summary>
+    </key>
+    <key name="show-sound" type="s">
+      <choices>
+        <choice value="none"/>
+        <choice value="drop"/>
+        <choice value="file"/>
+      </choices>
+      <default>'none'</default>
+      <summary>Sound played when the cursor shows again</summary>
+    </key>
+    <key name="show-sound-file" type="s">
+      <default>''</default>
+      <summary>Sound file played when the cursor shows, if show-sound is 'file'</summary>
+    </key>
+
     <key name="debug" type="b">
       <default>false</default>
       <summary>Log hiding decisions to the journal</summary>
