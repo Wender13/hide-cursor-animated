@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.hide-cursor-drops"
+    path="/org/gnome/shell/extensions/hide-cursor-drops/">
+    <key name="timeout" type="i">
+      <default>5</default>
+      <summary>Hide cursor timeout</summary>
+      <description>Time in seconds after which the cursor is hidden when idle.</description>
+    </key>
+    <key name="animation-enabled" type="b">
+      <default>true</default>
+      <summary>Animate when hiding</summary>
+    </key>
+    <key name="animation-duration" type="i">
+      <default>900</default>
+      <summary>Animation duration in milliseconds</summary>
+    </key>
+    <key name="custom-color-enabled" type="b">
+      <default>false</default>
+      <summary>Use a custom drop color instead of the cursor's</summary>
+    </key>
+    <key name="custom-color" type="s">
+      <default>'#3584e4'</default>
+      <summary>Custom drop color (#rrggbb)</summary>
+    </key>
+  </schema>
+</schemalist>
