@@ -1,0 +1,226 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the hide-cursor-drops package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: hide-cursor-drops\n"
+"Report-Msgid-Bugs-To: https://github.com/Wender13/hide-cursor-animated/issues\n"
+"POT-Creation-Date: 2026-10-23 09:01-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: prefs.js:15
+msgid "Drops"
+msgstr ""
+
+#: prefs.js:16
+msgid "Shrink"
+msgstr ""
+
+#: prefs.js:17 prefs.js:24
+msgid "Fade"
+msgstr ""
+
+#: prefs.js:18 prefs.js:25
+msgid "Ripple"
+msgstr ""
+
+#: prefs.js:19 prefs.js:26
+msgid "None"
+msgstr ""
+
+#: prefs.js:22
+msgid "Drops gathering"
+msgstr ""
+
+#: prefs.js:23
+msgid "Grow"
+msgstr ""
+
+#: prefs.js:29
+msgid "Teardrop"
+msgstr ""
+
+#: prefs.js:30
+msgid "Ball"
+msgstr ""
+
+#: prefs.js:31
+msgid "Spark"
+msgstr ""
+
+#: prefs.js:34
+msgid "No sound"
+msgstr ""
+
+#: prefs.js:35
+msgid "Drop (bundled)"
+msgstr ""
+
+#: prefs.js:36
+msgid "Custom file"
+msgstr ""
+
+#: prefs.js:106
+msgid "General"
+msgstr ""
+
+#: prefs.js:108
+msgid "Hiding"
+msgstr ""
+
+#: prefs.js:109
+msgid "Hide after (seconds)"
+msgstr ""
+
+#: prefs.js:110
+msgid "Hide when typing"
+msgstr ""
+
+#: prefs.js:111
+msgid "Also when scrolling with the pointer at rest"
+msgstr ""
+
+#: prefs.js:112
+msgid "Animate when an app hides the cursor"
+msgstr ""
+
+#: prefs.js:113
+msgid "Video players and fullscreen browsers hide the cursor by themselves"
+msgstr ""
+
+#: prefs.js:121
+msgid "Animation"
+msgstr ""
+
+#: prefs.js:123 prefs.js:163
+msgid "When Hiding"
+msgstr ""
+
+#: prefs.js:124 prefs.js:131
+msgid "Duration (ms)"
+msgstr ""
+
+#: prefs.js:125 prefs.js:132
+msgid "Style"
+msgstr ""
+
+#: prefs.js:130 prefs.js:164
+msgid "When Showing Again"
+msgstr ""
+
+#: prefs.js:138
+msgid "Drops and Ripples"
+msgstr ""
+
+#: prefs.js:139
+msgid "Used by the Drops and Ripple styles. Size, distance and gravity are relative to the default (1.0)."
+msgstr ""
+
+#: prefs.js:141
+msgid "Number of drops"
+msgstr ""
+
+#: prefs.js:142
+msgid "Shape"
+msgstr ""
+
+#: prefs.js:143
+msgid "Size"
+msgstr ""
+
+#: prefs.js:144
+msgid "Distance"
+msgstr ""
+
+#: prefs.js:145
+msgid "Gravity"
+msgstr ""
+
+#: prefs.js:146
+msgid "0 makes the drops fly in a straight line"
+msgstr ""
+
+#: prefs.js:147
+msgid "Custom color"
+msgstr ""
+
+#: prefs.js:148
+msgid "Off: uses the color of the cursor itself"
+msgstr ""
+
+#: prefs.js:158
+msgid "Sound"
+msgstr ""
+
+#: prefs.js:160
+msgid "Sounds"
+msgstr ""
+
+#: prefs.js:161
+msgid "Played as system sounds: they follow the “System Sounds” volume and GNOME’s alert sounds switch."
+msgstr ""
+
+#: prefs.js:187
+msgid "Color"
+msgstr ""
+
+#: prefs.js:205
+msgid "Play"
+msgstr ""
+
+#: prefs.js:220
+msgid "File"
+msgstr ""
+
+#: prefs.js:221
+msgid "Choose…"
+msgstr ""
+
+#: prefs.js:223
+msgid "Audio"
+msgstr ""
+
+#: prefs.js:227
+msgid "Choose a Sound"
+msgstr ""
+
+#: prefs.js:244
+msgid "No file chosen"
+msgstr ""
+
+#: prefs.js:254
+msgid "Excluded Apps"
+msgstr ""
+
+#: prefs.js:255
+msgid "The cursor is never hidden automatically over these apps."
+msgstr ""
+
+#: prefs.js:259 prefs.js:310
+msgid "Add App"
+msgstr ""
+
+#: prefs.js:278
+msgid "App not found"
+msgstr ""
+
+#: prefs.js:285
+msgid "Remove"
+msgstr ""
+
+#: prefs.js:295
+msgid "No excluded apps"
+msgstr ""
+
+#: prefs.js:311
+msgid "Search apps"
+msgstr ""

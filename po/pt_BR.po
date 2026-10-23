@@ -1,0 +1,225 @@
+# Brazilian Portuguese translation for Hide Cursor Drops.
+# Copyright (C) 2026 Wender
+# This file is distributed under the same license as the hide-cursor-drops package.
+# Wender, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: hide-cursor-drops\n"
+"Report-Msgid-Bugs-To: https://github.com/Wender13/hide-cursor-animated/issues\n"
+"POT-Creation-Date: 2026-10-23 09:01-0300\n"
+"PO-Revision-Date: 2026-10-23 09:10-0300\n"
+"Last-Translator: Wender\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: prefs.js:15
+msgid "Drops"
+msgstr "Gotas"
+
+#: prefs.js:16
+msgid "Shrink"
+msgstr "Encolher"
+
+#: prefs.js:17 prefs.js:24
+msgid "Fade"
+msgstr "Desvanecer"
+
+#: prefs.js:18 prefs.js:25
+msgid "Ripple"
+msgstr "Onda"
+
+#: prefs.js:19 prefs.js:26
+msgid "None"
+msgstr "Nenhuma"
+
+#: prefs.js:22
+msgid "Drops gathering"
+msgstr "Gotas se juntando"
+
+#: prefs.js:23
+msgid "Grow"
+msgstr "Crescer"
+
+#: prefs.js:29
+msgid "Teardrop"
+msgstr "Gota"
+
+#: prefs.js:30
+msgid "Ball"
+msgstr "Bolinha"
+
+#: prefs.js:31
+msgid "Spark"
+msgstr "Faísca"
+
+#: prefs.js:34
+msgid "No sound"
+msgstr "Nenhum"
+
+#: prefs.js:35
+msgid "Drop (bundled)"
+msgstr "Gota (incluído)"
+
+#: prefs.js:36
+msgid "Custom file"
+msgstr "Arquivo personalizado"
+
+#: prefs.js:106
+msgid "General"
+msgstr "Geral"
+
+#: prefs.js:108
+msgid "Hiding"
+msgstr "Ocultar cursor"
+
+#: prefs.js:109
+msgid "Hide after (seconds)"
+msgstr "Ocultar após (segundos)"
+
+#: prefs.js:110
+msgid "Hide when typing"
+msgstr "Esconder ao digitar"
+
+#: prefs.js:111
+msgid "Also when scrolling with the pointer at rest"
+msgstr "Também ao rolar a tela com o mouse parado"
+
+#: prefs.js:112
+msgid "Animate when an app hides the cursor"
+msgstr "Animar quando um app esconde o cursor"
+
+#: prefs.js:113
+msgid "Video players and fullscreen browsers hide the cursor by themselves"
+msgstr "Players de vídeo e navegadores em tela cheia escondem o cursor sozinhos"
+
+#: prefs.js:121
+msgid "Animation"
+msgstr "Animação"
+
+#: prefs.js:123 prefs.js:163
+msgid "When Hiding"
+msgstr "Ao esconder"
+
+#: prefs.js:124 prefs.js:131
+msgid "Duration (ms)"
+msgstr "Duração (ms)"
+
+#: prefs.js:125 prefs.js:132
+msgid "Style"
+msgstr "Estilo"
+
+#: prefs.js:130 prefs.js:164
+msgid "When Showing Again"
+msgstr "Ao reaparecer"
+
+#: prefs.js:138
+msgid "Drops and Ripples"
+msgstr "Gotas e ondas"
+
+#: prefs.js:139
+msgid "Used by the Drops and Ripple styles. Size, distance and gravity are relative to the default (1.0)."
+msgstr "Usado pelos estilos Gotas e Onda. Tamanho, distância e gravidade são relativos ao padrão (1,0)."
+
+#: prefs.js:141
+msgid "Number of drops"
+msgstr "Quantidade de gotas"
+
+#: prefs.js:142
+msgid "Shape"
+msgstr "Formato"
+
+#: prefs.js:143
+msgid "Size"
+msgstr "Tamanho"
+
+#: prefs.js:144
+msgid "Distance"
+msgstr "Distância"
+
+#: prefs.js:145
+msgid "Gravity"
+msgstr "Gravidade"
+
+#: prefs.js:146
+msgid "0 makes the drops fly in a straight line"
+msgstr "0 faz as gotas voarem em linha reta"
+
+#: prefs.js:147
+msgid "Custom color"
+msgstr "Cor personalizada"
+
+#: prefs.js:148
+msgid "Off: uses the color of the cursor itself"
+msgstr "Desligado: usa a cor do próprio cursor"
+
+#: prefs.js:158
+msgid "Sound"
+msgstr "Som"
+
+#: prefs.js:160
+msgid "Sounds"
+msgstr "Sons"
+
+#: prefs.js:161
+msgid "Played as system sounds: they follow the “System Sounds” volume and GNOME’s alert sounds switch."
+msgstr "Tocados como sons do sistema: seguem o volume de “Sons do sistema” e a opção de sons de alerta do GNOME."
+
+#: prefs.js:187
+msgid "Color"
+msgstr "Cor"
+
+#: prefs.js:205
+msgid "Play"
+msgstr "Ouvir"
+
+#: prefs.js:220
+msgid "File"
+msgstr "Arquivo"
+
+#: prefs.js:221
+msgid "Choose…"
+msgstr "Escolher…"
+
+#: prefs.js:223
+msgid "Audio"
+msgstr "Áudio"
+
+#: prefs.js:227
+msgid "Choose a Sound"
+msgstr "Escolher um som"
+
+#: prefs.js:244
+msgid "No file chosen"
+msgstr "Nenhum arquivo escolhido"
+
+#: prefs.js:254
+msgid "Excluded Apps"
+msgstr "Apps excluídos"
+
+#: prefs.js:255
+msgid "The cursor is never hidden automatically over these apps."
+msgstr "O cursor nunca é escondido automaticamente sobre estes apps."
+
+#: prefs.js:259 prefs.js:310
+msgid "Add App"
+msgstr "Adicionar app"
+
+#: prefs.js:278
+msgid "App not found"
+msgstr "App não encontrado"
+
+#: prefs.js:285
+msgid "Remove"
+msgstr "Remover"
+
+#: prefs.js:295
+msgid "No excluded apps"
+msgstr "Nenhum app excluído"
+
+#: prefs.js:311
+msgid "Search apps"
+msgstr "Buscar apps"

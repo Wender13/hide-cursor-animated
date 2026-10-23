@@ -3,6 +3,7 @@
   "name": "Hide Cursor Drops",
   "description": "Hides the mouse cursor on inactivity with an animation: the cursor shrinks and bursts into three drops of its own color.",
   "settings-schema": "org.gnome.shell.extensions.hide-cursor-drops",
+  "gettext-domain": "hide-cursor-drops",
   "shell-version": [
     "49",
     "50"
